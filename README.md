@@ -1,0 +1,2 @@
+# gfc
+global fare cache
