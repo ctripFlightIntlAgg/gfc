@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+message ResponseType {
+    string transaction_id = 1;
+    string market = 2; // Official Country Code. Optional
+    string affiliate_site = 3; // If you don't have Market info, please provide AffiliateSite info.
+    string search_date = 4;  // Format: yyyy-MM-dd
+    string search_time = 5;  // Format: HH:mm:ss.SSSZ, eg. "14:12:14.302+0800"
+    string origin = 6;  // Origin city/airport of the first bound.
+    LocCodeType origin_type = 7;  // Indicate code type of Origin
+    string destination = 8;  // Destination city/airport of the first bound.
+    LocCodeType destination_type = 9; // Indicate code type of Destination
+    string departure_date = 10;  // Format: yyyy-MM-dd
+    string return_date = 11;  // Format: yyyy-MM-dd
+    int32 adult_num = 12;
+    int32 child_num = 13;
+    int32 infant_num = 14;
+    repeated Fare fares = 15;
+    string identity = 16; // Trip,MMT,SC,Travix
+}
+
+message Fare {
+    string currency = 1;   //Currency Code
+    PaxPriceInfo adult_price_info = 2;
+    PaxPriceInfo child_price_info = 3;
+    PaxPriceInfo infant_price_info = 4;
+    repeated Segment segments = 5;
+    string POS_city = 6;  // Prefer pos city
+    string POS_country = 7;  // If provided pos city, pos country is unnecessary
+    Interval max_ticketing_time = 8; // Optional
+    Flexibility flexibility = 9; // Optional
+}
+
+message Segment {
+    string departure_airport = 1;
+    string arrival_airport = 2;
+    string departure_date = 3;  // Format: yyyy-MM-dd
+    string departure_time = 4;  // Format: HH:mm
+    string arrival_date = 5;  // Format: yyyy-MM-dd
+    string arrival_time = 6;  // Format: HH:mm
+    string operating_carrier = 7;
+    int32 operating_flight_number = 8;  // Optional
+    string marketing_carrier = 9;
+    int32 marketing_flight_number = 10;
+    string departure_terminal = 11;  // Optional
+    string arrival_terminal = 12;  // Optional
+    Interval duration = 13;  // Optional
+    string fare_family = 14; //Optional
+    repeated PaxSegmentInfo pax_infos = 15;
+}
+
+message PaxPriceInfo {
+    double price = 1;
+    double tax = 2;
+    double surcharge = 3; // Optional
+    double fee = 4;  // Optional
+    double price_in_NUC = 5;  // Optional
+    double tax_in_NUC = 6;  // Optional
+    double surcharge_in_NUC = 7;  // Optional
+    double fee_in_NUC = 8;  // Optional
+    repeated TaxBreakDown tax_break_down = 9;   // Optional
+}
+
+message PaxSegmentInfo {
+    repeated PaxType pax_group = 1;
+    string cabin = 2; // Y,W,C,F
+    string RBD = 3;
+    int32 seat_count = 4;
+    string fare_basis = 5;
+    string fare_class = 6;  // Optional
+    BaggageAllowance baggage_allowance = 7; //Optional
+}
+
+message Interval {
+    int32 value = 1;
+    TimeUnit unit = 2;
+}
+
+enum TimeUnit {
+    TIME_UNIT_UNSPECIFIED = 0;
+    YEAR = 1;
+    MONTH = 2;
+    DAY = 3;
+    HOUR = 4;
+    MINUTE = 5;
+    SECOND = 6;
+    MILLISECOND = 7;
+}
+
+message BaggageAllowance {
+    bool has_free_checked_baggage = 1;
+    bool has_free_carry_on_baggage = 2;
+    BaggageDetail checked_baggage_detail = 3;
+    BaggageDetail carry_on_baggage_detail = 4;
+}
+
+message BaggageDetail {
+    int32 piece_allowance = 1; // -1 represent unknown
+    Weight piece_weight = 2;
+    Weight total_weight = 3;
+}
+
+message Flexibility {
+    bool refundable = 1;
+    bool amendable = 2;
+    double refund_amount = 3;
+    double amend_amount = 4;
+}
+
+message Weight {
+    int32 value = 1;
+    WeightUnit unit = 2;
+}
+
+enum WeightUnit {
+    WEIGHT_UNIT_UNSPECIFIED = 0;
+    KG = 1;
+}
+
+enum PaxType {
+    PAX_TYPE_UNSPECIFIED = 0;
+    ADULT = 1;
+    CHILD = 2;
+    INFANT = 3;
+}
+
+message TaxBreakDown {
+    double amount = 1;
+    string code = 2;
+    string currency = 3;
+}
+
+enum LocCodeType {
+    LOC_CODE_UNSPECIFIED = 0;
+    CITY_CODE = 1;
+    AIRPORT_CODE = 2;
+}
