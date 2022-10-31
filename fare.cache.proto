@@ -16,7 +16,7 @@ message ResponseType {
     int32 child_num = 13;
     int32 infant_num = 14;
     repeated Fare fares = 15;
-    string identity = 16; // Trip,MMT,SC,Travix
+    string identity = 16; // identity of each company
 }
 
 message Fare {
@@ -47,6 +47,8 @@ message Segment {
     Interval duration = 13;  // Optional
     string fare_family = 14; //Optional
     repeated PaxSegmentInfo pax_infos = 15;
+    repeated Stop stops = 16;
+    string aircraft_type = 17; // aircraft IATA typeCode
 }
 
 message PaxPriceInfo {
@@ -134,4 +136,12 @@ enum LocCodeType {
     LOC_CODE_UNSPECIFIED = 0;
     CITY_CODE = 1;
     AIRPORT_CODE = 2;
+}
+
+message Stop {
+    Interval duration = 1;
+    string terminal = 2;
+    string airportCode = 3;
+    string departure_time = 4; // Format: yyyy-MM-dd HH:mm
+    string arrival_time = 5; // Format: yyyy-MM-dd HH:mm
 }
