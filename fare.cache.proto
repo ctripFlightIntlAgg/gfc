@@ -49,6 +49,7 @@ message Segment {
     repeated PaxSegmentInfo pax_infos = 15;
     repeated Stop stops = 16;
     string aircraft_type = 17; // aircraft IATA typeCode
+    int32 bound_number = 18; // 1: onward journey; 2: return journey
 }
 
 message PaxPriceInfo {
