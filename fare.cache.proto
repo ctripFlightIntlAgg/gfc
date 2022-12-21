@@ -29,6 +29,7 @@ message Fare {
     string POS_country = 7;  // If provided pos city, pos country is unnecessary
     Interval max_ticketing_time = 8; // Optional
     Flexibility flexibility = 9; // Optional
+    string validating_carrier = 10;
 }
 
 message Segment {
